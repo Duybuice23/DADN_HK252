@@ -12,6 +12,7 @@
 #include "task_wifi.h"
 #include "task_webserver.h"
 #include "task_core_iot.h"
+#include "task_servo.h"
 // #include "mainserver.h"
 
 void setup()
@@ -20,6 +21,7 @@ void setup()
 
   
   check_info_File(false);
+
 
   // Task 1: LED theo nhiệt độ
   // xTaskCreate(led_blinky,

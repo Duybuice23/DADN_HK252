@@ -13,6 +13,11 @@
 extern float glob_temperature;
 extern float glob_humidity;
 
+
+#define MQ2_AO_PIN 4
+#define MQ2_DO_PIN 5
+#define MQ2_THRESHOLD 1800
+
 // ====== Ngưỡng & mức nhiệt độ / độ ẩm (giá trị mặc định) ======
 #define TEMP_COLD_THRESHOLD   24.0f
 #define TEMP_HOT_THRESHOLD    32.0f

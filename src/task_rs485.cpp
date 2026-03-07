@@ -104,7 +104,7 @@ void Task_Send_data(void *pvParameters)
     {
         if (!state)
         {
-            Serial.println("🟢 Đang bật từng relay...");
+            Serial.println("Đang bật từng relay...");
             for (int i = 0; i < 4; i++)
             {
                 sendModbusCommand(relay_ON[i], sizeof(relay_ON[i]));
@@ -114,7 +114,7 @@ void Task_Send_data(void *pvParameters)
         }
         else
         {
-            Serial.println("🔴 Đang tắt từng relay...");
+            Serial.println("Đang tắt từng relay...");
             for (int i = 0; i < 4; i++)
             {
                 sendModbusCommand(relay_OFF[i], sizeof(relay_OFF[i]));
@@ -124,9 +124,9 @@ void Task_Send_data(void *pvParameters)
         }
 
         if (!state)
-            Serial.println("✅ Hoàn tất bật tất cả relay!");
+            Serial.println("Hoàn tất bật tất cả relay!");
         else
-            Serial.println("✅ Hoàn tất tắt tất cả relay!");
+            Serial.println("Hoàn tất tắt tất cả relay!");
 
         // Đảo trạng thái cho lần kế tiếp
         state = !state;
