@@ -1,82 +1,36 @@
 #include "led_blinky.h"
-
-static void blinkPatternCold();
-static void blinkPatternNormal();
-static void blinkPatternHot();
+#include "global.h" // Bắt buộc include để đọc biến từ RPC
 
 void led_blinky(void *pvParameters)
 {
   pinMode(LED_GPIO, OUTPUT);
 
-  uint8_t currentLevel = glob_temp_level;
-
   for (;;)
   {
-    // Nếu người dùng tắt LED từ web => giữ tắt và bỏ qua pattern
+    // Kiểm tra cờ do RPC (ThingsBoard) điều khiển
     if (!glob_temp_led_enabled)
     {
+      // Nếu tắt: Kéo chân GPIO xuống LOW
       digitalWrite(LED_GPIO, LOW);
+      
+      // Nhường CPU 100ms rồi mới quay lại kiểm tra tiếp
       vTaskDelay(pdMS_TO_TICKS(100));
-      continue;
+      continue; 
     }
 
-    // Nếu có thông báo mức nhiệt mới => cập nhật pattern
-    if (xTempLedSemaphore != nullptr && xSemaphoreTake(xTempLedSemaphore, 0) == pdTRUE)
-    {
-      currentLevel = glob_temp_level;
-    }
-
-    switch (currentLevel)
-    {
-    case TEMP_LEVEL_COLD:
-      // Lạnh
-      blinkPatternCold();
-      break;
-    case TEMP_LEVEL_HOT:
-      // Nóng
-      blinkPatternHot();
-      break;
-    case TEMP_LEVEL_NORMAL:
-    default:
-      // Bình thường
-      blinkPatternNormal();
-      break;
-    }
-  }
-}
-
-// LẠNH
-static void blinkPatternCold()
-{
-  TempLedConfig cfg = tempLedConfig[TEMP_LEVEL_COLD];
-  digitalWrite(LED_GPIO, HIGH);
-  vTaskDelay(pdMS_TO_TICKS(cfg.on_ms));
-  digitalWrite(LED_GPIO, LOW);
-  vTaskDelay(pdMS_TO_TICKS(cfg.off_ms));
-}
-
-// BÌNH THƯỜNG
-static void blinkPatternNormal()
-{
-  TempLedConfig cfg = tempLedConfig[TEMP_LEVEL_NORMAL];
-  digitalWrite(LED_GPIO, HIGH);
-  vTaskDelay(pdMS_TO_TICKS(cfg.on_ms));
-  digitalWrite(LED_GPIO, LOW);
-  vTaskDelay(pdMS_TO_TICKS(cfg.off_ms));
-}
-
-// NÓNG
-static void blinkPatternHot()
-{
-  TempLedConfig cfg = tempLedConfig[TEMP_LEVEL_HOT];
-
-  for (int i = 0; i < 3; ++i)
-  {
+    // ==========================================
+    // TRẠNG THÁI ON (LỆNH TỪ RPC ĐÃ BẬT TRUE)
+    // ==========================================
+    
+    // Nếu bạn chỉ muốn sáng liên tục:
     digitalWrite(LED_GPIO, HIGH);
-    vTaskDelay(pdMS_TO_TICKS(cfg.on_ms));
+    vTaskDelay(pdMS_TO_TICKS(100)); // Vẫn phải delay để nhường CPU
+    
+    /* // Nếu bạn muốn nhấp nháy liên tục khi bật, hãy dùng đoạn code này:
+    digitalWrite(LED_GPIO, HIGH);
+    vTaskDelay(pdMS_TO_TICKS(500)); 
     digitalWrite(LED_GPIO, LOW);
-    vTaskDelay(pdMS_TO_TICKS(cfg.off_ms));
+    vTaskDelay(pdMS_TO_TICKS(500)); 
+    */
   }
-  
-  vTaskDelay(pdMS_TO_TICKS(700));
 }

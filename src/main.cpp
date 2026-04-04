@@ -1,7 +1,7 @@
 #include "global.h"
 
-// #include "led_blinky.h"
-// #include "neo_blinky.h"
+#include "led_blinky.h"
+#include "neo_blinky.h"
 #include "temp_humi_monitor.h"
 // #include "tinyml.h"
 #include "coreiot.h"
@@ -21,21 +21,21 @@ void setup()
   
   check_info_File(false);
 
-  // Task 1: LED theo nhiệt độ
-  // xTaskCreate(led_blinky,
-  //             "Task LED Blink",
-  //             2048,
-  //             nullptr,
-  //             2,
-  //             nullptr);
+  //Task 1: LED theo nhiệt độ
+  xTaskCreate(led_blinky,
+              "Task LED Blink",
+              2048,
+              nullptr,
+              2,
+              nullptr);
 
-  // Task 2: NeoPixel theo độ ẩm
-  // xTaskCreate(neo_blinky,
-  //             "Task NEO Blink",
-  //             2048,
-  //             nullptr,
-  //             2,
-  //             nullptr);
+  //Task 2: NeoPixel theo độ ẩm
+  xTaskCreate(neo_blinky,
+              "Task NEO Blink",
+              2048,
+              nullptr,
+              2,
+              nullptr);
 
   // Task 3: Đọc DHT20 + LCD + phát semaphore + gửi WebSocket
   xTaskCreate(temp_humi_monitor,

@@ -1,6 +1,5 @@
-
 #include "task_core_iot.h"
-
+#include "global.h"
 constexpr uint32_t MAX_MESSAGE_SIZE = 1024U;
 
 WiFiClient wifiClient;
@@ -47,6 +46,43 @@ void processSharedAttributes(const Shared_Attribute_Data &data)
     }
 }
 
+RPC_Response handleSetLogic(const char* methodName, bool state) {
+    if (strcmp(methodName, "setTempLed") == 0) {
+        glob_temp_led_enabled = state;
+        // Bổ sung code điều khiển phần cứng nếu có: digitalWrite(PIN_1, state);
+    } 
+    else if (strcmp(methodName, "setHumiLed") == 0) {
+        glob_humi_led_enabled = state;
+        // Bổ sung code điều khiển phần cứng nếu có: digitalWrite(PIN_2, state);
+    }
+
+    Serial.printf("[%s] State changed to: %s\n", methodName, state ? "ON" : "OFF");
+    
+    // Trả về đúng tên method và trạng thái
+    return RPC_Response(methodName, state);
+}
+
+// --- HÀM XỬ LÝ CHUNG CHO LỆNH GET (LẤY TRẠNG THÁI) ---
+RPC_Response handleGetLogic(const char* methodName) {
+    bool currentState = false;
+    
+    if (strcmp(methodName, "getTempLed") == 0) {
+        currentState = glob_temp_led_enabled;
+    } 
+    else if (strcmp(methodName, "getHumiLed") == 0) {
+        currentState = glob_humi_led_enabled;
+    }
+    
+    return RPC_Response(methodName, currentState);
+}
+
+
+RPC_Response setTempLedSwitch(const RPC_Data &data) { return handleSetLogic("setTempLed", data); }
+RPC_Response setHumiLedSwitch(const RPC_Data &data) { return handleSetLogic("setHumiLed", data); }
+
+RPC_Response getTempLedStatus(const RPC_Data &data) { return handleGetLogic("getTempLed"); }
+RPC_Response getHumiLedStatus(const RPC_Data &data) { return handleGetLogic("getHumiLed"); }
+
 RPC_Response setLedSwitchValue(const RPC_Data &data)
 {
     Serial.println("Received Switch state");
@@ -56,8 +92,12 @@ RPC_Response setLedSwitchValue(const RPC_Data &data)
     return RPC_Response("setLedSwitchValue", newState);
 }
 
-const std::array<RPC_Callback, 1U> callbacks = {
-    RPC_Callback{"setLedSwitchValue", setLedSwitchValue}};
+const std::array<RPC_Callback, 4U> callbacks = {
+    RPC_Callback{"setTempLed", setTempLedSwitch},
+    RPC_Callback{"setHumiLed", setHumiLedSwitch},
+    RPC_Callback{"getTempLed", getTempLedStatus},
+    RPC_Callback{"getHumiLed", getHumiLedStatus}
+};
 
 const Shared_Attribute_Callback attributes_callback(&processSharedAttributes, SHARED_ATTRIBUTES_LIST.cbegin(), SHARED_ATTRIBUTES_LIST.cend());
 const Attribute_Request_Callback attribute_shared_request_callback(&processSharedAttributes, SHARED_ATTRIBUTES_LIST.cbegin(), SHARED_ATTRIBUTES_LIST.cend());

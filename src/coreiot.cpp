@@ -5,7 +5,8 @@
 WiFiClient   espClient;
 PubSubClient client(espClient);
 
-// Helper: so sánh chuỗi không phân biệt hoa thường
+
+
 static bool equalsIgnoreCase(const char *a, const char *b)
 {
   if (!a || !b) return false;
@@ -17,7 +18,6 @@ static bool equalsIgnoreCase(const char *a, const char *b)
   return (*a == '\0' && *b == '\0');
 }
 
-// Helper: convert params RPC => bool
 static bool rpcParamToBool(const JsonVariantConst &param)
 {
   if (param.is<bool>())  return param.as<bool>();
@@ -218,6 +218,7 @@ void coreiot_task(void *pvParameters)
         StaticJsonDocument<256> doc;
         doc["temperature"] = glob_temperature;
         doc["humidity"]    = glob_humidity;
+        doc["gas"] = glob_gas;
         String payload;
         serializeJson(doc, payload);
         client.publish("v1/devices/me/telemetry", payload.c_str());

@@ -12,6 +12,7 @@
 #define LED_COUNT 1 
 extern float glob_temperature;
 extern float glob_humidity;
+extern float glob_gas;
 
 // ====== Ngưỡng & mức nhiệt độ / độ ẩm (giá trị mặc định) ======
 #define TEMP_COLD_THRESHOLD   24.0f

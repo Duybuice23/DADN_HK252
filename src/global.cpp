@@ -3,7 +3,7 @@
 // ====== Biến toàn cục cảm biến ======
 float glob_temperature = 0.0f;
 float glob_humidity    = 0.0f;
-
+float glob_gas = 0.0f;
 // Mức nhiệt/ẩm & trạng thái hiển thị
 volatile uint8_t glob_temp_level     = TEMP_LEVEL_NORMAL;
 volatile uint8_t glob_humi_level     = HUMI_LEVEL_OK;
@@ -51,8 +51,8 @@ String ssid     = "ESP32 LOCAL";
 String password = "12345678";
 
 // ====== WiFi STA ======
-String wifi_ssid     = "Yen Nguyen A";
-String wifi_password = "123456789";
+String wifi_ssid     = "B4-1020";
+String wifi_password = "10202005";
 
 // Cờ báo đã có Internet
 bool isWifiConnected = false;

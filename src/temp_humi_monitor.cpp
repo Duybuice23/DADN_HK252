@@ -2,20 +2,19 @@
 #include <Wire.h>
 #include <ArduinoJson.h>
 #include "task_webserver.h"
-
+#include <mq2.h>
 DHT20 dht20;
 // I2C LCD: address 33 (0x21), 16x2
 LiquidCrystal_I2C lcd(33, 16, 2);
 
 // Khai báo lại các hàm cho đúng
-static void updateLcd(float temperature, float humidity);
+static void updateLcd(float temperature, float humidity, float gas);
 static void sendSensorToWeb(float temperature, float humidity);
 
 void temp_humi_monitor(void *pvParameters)
 {
   Wire.begin(11, 12);
   dht20.begin();
-
   lcd.begin();
   lcd.backlight();
   lcd.clear();
@@ -30,6 +29,7 @@ void temp_humi_monitor(void *pvParameters)
     dht20.read();
     float temperature = dht20.getTemperature();
     float humidity    = dht20.getHumidity();
+    int gas = analogRead(MQ2_PIN);
 
     if (isnan(temperature) || isnan(humidity))
     {
@@ -41,9 +41,9 @@ void temp_humi_monitor(void *pvParameters)
     // Cập nhật giá trị thô toàn cục
     glob_temperature = temperature;
     glob_humidity    = humidity;
-
+    glob_gas = gas;
     // GỌI HÀM CẬP NHẬT LCD (Đã fix lỗi màn hình đơ)
-    updateLcd(temperature, humidity);
+    updateLcd(temperature, humidity, gas);
 
     // Gửi dữ liệu lên webserver qua WebSocket
     sendSensorToWeb(temperature, humidity);
@@ -52,19 +52,21 @@ void temp_humi_monitor(void *pvParameters)
     Serial.print(humidity);
     Serial.print("%  T: ");
     Serial.print(temperature);
-    Serial.println(" C");
-
+    Serial.print(" C ");
+    Serial.print("G: ");
+    Serial.println(gas);
     vTaskDelay(pdMS_TO_TICKS(2000));
   }
 }
 
 // Bỏ tham số DisplayState đi vì không dùng nữa
-static void updateLcd(float temperature, float humidity)
+static void updateLcd(float temperature, float humidity, float gas)
 {
   lcd.clear();
 
   lcd.setCursor(0, 0);
-  lcd.print("Monitoring..."); 
+  lcd.print("Gas: ");
+  lcd.print(gas, 0); 
 
   // Dòng 2: In nhiệt độ & độ ẩm
   lcd.setCursor(0, 1);
@@ -82,7 +84,7 @@ static void sendSensorToWeb(float temperature, float humidity)
   doc["page"] = "sensor";
   doc["temp"] = temperature;
   doc["humi"] = humidity;
-
+  
   String json;
   serializeJson(doc, json);
   Webserver_sendata(json);
