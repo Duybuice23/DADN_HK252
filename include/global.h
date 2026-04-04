@@ -9,6 +9,7 @@
 // ====== Giá trị cảm biến toàn cục ======
 #define LED_GPIO 48
 #define NEO_PIN 45
+#define GAS_LED_GPIO 1
 #define LED_COUNT 1 
 extern float glob_temperature;
 extern float glob_humidity;
@@ -74,6 +75,7 @@ extern NeoColorConfig neoColorConfig[3];
 // Cho phép bật/tắt LED từ Web UI
 extern volatile bool glob_temp_led_enabled;
 extern volatile bool glob_humi_led_enabled;
+extern volatile bool glob_gas_led_enabled;
 
 // ====== TinyML runtime result (cho CoreIoT & WebServer) ======
 extern float tinyml_score;

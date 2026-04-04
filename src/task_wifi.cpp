@@ -26,12 +26,12 @@ void startSTA()
     {
         vTaskDelay(pdMS_TO_TICKS(100));
         if (millis() - t0 > 15000) {   // timeout 15s để không treo vĩnh viễn
-            Serial.println("❌ STA connect timeout");
+            Serial.println("Error: STA connect timeout");
             return;
         }
     }
 
-    Serial.print("✅ STA IP: ");
+    Serial.print("Success: STA IP: ");
     Serial.println(WiFi.localIP());
 
     xSemaphoreGive(xBinarySemaphoreInternet);
