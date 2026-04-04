@@ -3,6 +3,7 @@
 // ====== Biến toàn cục cảm biến ======
 float glob_temperature = 0.0f;
 float glob_humidity    = 0.0f;
+float glob_gas         = 0.0f;
 
 // Mức nhiệt/ẩm & trạng thái hiển thị
 volatile uint8_t glob_temp_level     = TEMP_LEVEL_NORMAL;

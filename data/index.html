@@ -69,11 +69,11 @@
       <header class="top-header">
         <div>
           <h1>Dashboard Tổng Quan</h1>
-          <p>Giám sát thời gian thực nhiệt độ và độ ẩm</p>
+          <p>Giám sát thời gian thực nhiệt độ, độ ẩm và khí gas</p>
         </div>
       </header>
 
-      <div class="bento-grid-2">
+      <div class="bento-grid-2 dashboard-stats">
         <div class="card stat-card gradient-orange">
           <div class="stat-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -102,6 +102,24 @@
               <span id="humi-value">--</span><small>%</small>
             </div>
             <span class="stat-sub">Cảm biến DHT20</span>
+          </div>
+          <div class="bg-decoration"></div>
+        </div>
+
+        <div class="card stat-card gradient-red">
+          <div class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2l4.5 7.5L21 12l-4.5 2.5L12 22l-4.5-7.5L3 12l4.5-2.5L12 2z"></path>
+              <path d="M12 8v5"></path>
+              <path d="M12 17h.01"></path>
+            </svg>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Khí Gas</span>
+            <div class="stat-value">
+              <span id="gas-value">--</span><small>ADC</small>
+            </div>
+            <span class="stat-sub">Cảm biến MQ2</span>
           </div>
           <div class="bg-decoration"></div>
         </div>

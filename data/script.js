@@ -238,6 +238,7 @@ function initForms() {
 function updateSensorCard(data) {
   const temp = data.temp;
   const humi = data.humi;
+  const gas = data.gas;
 
   if (typeof temp === "number") {
     document.getElementById("temp-value").textContent = temp.toFixed(1);
@@ -245,6 +246,10 @@ function updateSensorCard(data) {
 
   if (typeof humi === "number") {
     document.getElementById("humi-value").textContent = humi.toFixed(0);
+  }
+
+  if (typeof gas === "number") {
+    document.getElementById("gas-value").textContent = gas.toFixed(0);
   }
 
   const stateEl = document.getElementById("env-state");

@@ -13,6 +13,7 @@
 #define LED_COUNT 1 
 extern float glob_temperature;
 extern float glob_humidity;
+extern float glob_gas;
 
 
 #define MQ2_AO_PIN 4
