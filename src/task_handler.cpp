@@ -77,11 +77,6 @@ void handleWebSocketMessage(String message)
         xSemaphoreGive(xHumiNeoSemaphore);
       }
     }
-    else if (name == "LED Gas")
-    {
-      glob_gas_led_enabled = isOn;
-      targetGpio = GAS_LED_GPIO;
-    }
 
     if (targetGpio >= 0)
     {
@@ -267,7 +262,6 @@ void handleWebSocketMessage(String message)
                             neoColorConfig[HUMI_LEVEL_HUMID].g,
                             neoColorConfig[HUMI_LEVEL_HUMID].b);
 
-    // Trạng thái thiết bị (cho nút gạt LED1, LED2, LED Gas)
     // Trạng thái thiết bị (cho nút gạt LED1, LED2)
     JsonArray devs = v.createNestedArray("devices");
     JsonObject d1 = devs.createNestedObject();
@@ -279,11 +273,6 @@ void handleWebSocketMessage(String message)
     d2["name"]   = "LED2";
     d2["gpio"]   = NEO_PIN;
     d2["status"] = glob_humi_led_enabled ? "ON" : "OFF";
-
-    JsonObject d3 = devs.createNestedObject();
-    d3["name"]   = "LED Gas";
-    d3["gpio"]   = GAS_LED_GPIO;
-    d3["status"] = glob_gas_led_enabled ? "ON" : "OFF";
 
     // Cấu hình WiFi/CoreIoT để pre-fill vào form Cài đặt
     JsonObject s = v.createNestedObject("settings");

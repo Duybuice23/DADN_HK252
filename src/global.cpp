@@ -33,7 +33,6 @@ NeoColorConfig neoColorConfig[3] = {
 // ====== Bật/tắt hiển thị LED từ WebUI ======
 volatile bool glob_temp_led_enabled = true;
 volatile bool glob_humi_led_enabled = true;
-volatile bool glob_gas_led_enabled  = false;
 
 // ====== TinyML runtime result ======
 float tinyml_score        = 0.0f;

@@ -23,14 +23,6 @@ const relayList = [
     label: "LED Độ ẩm",
     icon: "fa-fan",
   },
-  {
-    id: "LED_GAS",
-    name: "LED Gas",
-    gpio: 1,
-    state: false,
-    label: "LED Gas",
-    icon: "fa-fire",
-  },
 ];
 
 function initWebSocket() {
