@@ -40,7 +40,7 @@ enum DisplayState : uint8_t {
 };
 
 // Cấu hình nháy LED theo nhiệt độ (ms)
-struct TempLedConfig {
+struct Led01Config {
   uint16_t on_ms;
   uint16_t off_ms;
 };
@@ -64,12 +64,12 @@ extern float humiDryThreshold;
 extern float humiHumidThreshold;
 
 // Cấu hình LED runtime
-extern TempLedConfig tempLedConfig[3];
+extern Led01Config led01Config[3];
 extern NeoColorConfig neoColorConfig[3];
 
 // Cho phép bật/tắt LED từ Web UI
-extern volatile bool glob_temp_led_enabled;
-extern volatile bool glob_humi_led_enabled;
+extern volatile bool glob_led01_enabled;
+extern volatile bool glob_led02_enabled;
 
 // ====== TinyML runtime result (cho CoreIoT & WebServer) ======
 extern float tinyml_score;
@@ -100,8 +100,9 @@ extern SemaphoreHandle_t xBinarySemaphoreInternet;
 
 // ====== Semaphore đồng bộ các task  ======
 // Được temp_humi_monitor "give" khi mức nhiệt thay đổi → Task LED dùng.
-extern SemaphoreHandle_t xTempLedSemaphore;
+extern SemaphoreHandle_t xLed01Semaphore;
 // Được temp_humi_monitor "give" khi mức ẩm thay đổi → Task NeoPixel dùng.
-extern SemaphoreHandle_t xHumiNeoSemaphore;
+extern SemaphoreHandle_t xLed02Semaphore;
 
 #endif
+

@@ -121,6 +121,9 @@ body {
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
+.dashboard-stats {
+  grid-template-columns: repeat(3, 1fr);
+}
 .margin-top { margin-top: 24px; }
 
 /* === CARDS === */
@@ -158,6 +161,8 @@ body {
 .gradient-orange .stat-icon { color: var(--orange); }
 .gradient-blue { background: linear-gradient(135deg, #eff6ff, #dbeafe); border-color: #bfdbfe; }
 .gradient-blue .stat-icon { color: var(--accent-blue); }
+.gradient-red { background: linear-gradient(135deg, #fff1f2, #ffe4e6); border-color: #fecdd3; }
+.gradient-red .stat-icon { color: var(--danger); }
 
 .stat-info { z-index: 2; }
 .stat-label { font-size: 13px; font-weight: 600; text-transform: uppercase; color: var(--text-sub); letter-spacing: 1px; }

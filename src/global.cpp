@@ -16,7 +16,7 @@ float humiDryThreshold   = HUMI_DRY_THRESHOLD;
 float humiHumidThreshold = HUMI_HUMID_THRESHOLD;
 
 // ====== Cấu hình nháy LED theo nhiệt độ (ms) ======
-TempLedConfig tempLedConfig[3] = {
+Led01Config led01Config[3] = {
     {1000, 1000}, // LẠNH
     {200, 800},  // BÌNH THƯỜNG
     {150, 150}   // NÓNG 
@@ -30,8 +30,8 @@ NeoColorConfig neoColorConfig[3] = {
 };
 
 // ====== Bật/tắt hiển thị LED từ WebUI ======
-volatile bool glob_temp_led_enabled = true;
-volatile bool glob_humi_led_enabled = true;
+volatile bool glob_led01_enabled = true;
+volatile bool glob_led02_enabled = true;
 
 // ====== TinyML runtime result ======
 float tinyml_score        = 0.0f;
@@ -61,5 +61,6 @@ bool isWifiConnected = false;
 SemaphoreHandle_t xBinarySemaphoreInternet = xSemaphoreCreateBinary();
 
 // ====== Semaphore cho các task ======
-SemaphoreHandle_t xTempLedSemaphore = xSemaphoreCreateBinary();
-SemaphoreHandle_t xHumiNeoSemaphore = xSemaphoreCreateBinary();
+SemaphoreHandle_t xLed01Semaphore = xSemaphoreCreateBinary();
+SemaphoreHandle_t xLed02Semaphore = xSemaphoreCreateBinary();
+

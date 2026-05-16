@@ -6,10 +6,9 @@
 DHT20 dht20;
 // I2C LCD: address 33 (0x21), 16x2
 LiquidCrystal_I2C lcd(33, 16, 2);
-
 // Khai báo lại các hàm cho đúng
 static void updateLcd(float temperature, float humidity, float gas);
-static void sendSensorToWeb(float temperature, float humidity);
+static void sendSensorToWeb(float temperature, float humidity, int gas);
 
 void temp_humi_monitor(void *pvParameters)
 {
@@ -19,7 +18,7 @@ void temp_humi_monitor(void *pvParameters)
   lcd.backlight();
   lcd.clear();
   lcd.setCursor(0, 0);
-  lcd.print("DHT20 starting...");
+  lcd.print("Starting...");
   lcd.setCursor(0, 1);
   lcd.print("Please wait");
   vTaskDelay(pdMS_TO_TICKS(1500));
@@ -38,15 +37,13 @@ void temp_humi_monitor(void *pvParameters)
       humidity    = -1.0f;
     }
 
-    // Cập nhật giá trị thô toàn cục
     glob_temperature = temperature;
     glob_humidity    = humidity;
-    glob_gas = gas;
-    // GỌI HÀM CẬP NHẬT LCD (Đã fix lỗi màn hình đơ)
+    //glob_gas = gas;
+
     updateLcd(temperature, humidity, gas);
 
-    // Gửi dữ liệu lên webserver qua WebSocket
-    sendSensorToWeb(temperature, humidity);
+    sendSensorToWeb(temperature, humidity, gas);
 
     Serial.print("[DHT20] H: ");
     Serial.print(humidity);
@@ -59,7 +56,6 @@ void temp_humi_monitor(void *pvParameters)
   }
 }
 
-// Bỏ tham số DisplayState đi vì không dùng nữa
 static void updateLcd(float temperature, float humidity, float gas)
 {
   lcd.clear();
@@ -78,13 +74,14 @@ static void updateLcd(float temperature, float humidity, float gas)
   lcd.print("%");
 }
 
-static void sendSensorToWeb(float temperature, float humidity)
+static void sendSensorToWeb(float temperature, float humidity, int gas)
 {
-  StaticJsonDocument<128> doc;
+  StaticJsonDocument<192> doc;
   doc["page"] = "sensor";
   doc["temp"] = temperature;
   doc["humi"] = humidity;
-  
+  doc["gas"] = gas;
+
   String json;
   serializeJson(doc, json);
   Webserver_sendata(json);

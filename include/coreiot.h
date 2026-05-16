@@ -9,5 +9,6 @@
 
 
 void coreiot_task(void *pvParameters);
+void coreiot_publish_led_states();
 
 #endif

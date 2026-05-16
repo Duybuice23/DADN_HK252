@@ -47,12 +47,12 @@ void processSharedAttributes(const Shared_Attribute_Data &data)
 }
 
 RPC_Response handleSetLogic(const char* methodName, bool state) {
-    if (strcmp(methodName, "setTempLed") == 0) {
-        glob_temp_led_enabled = state;
+    if (strcmp(methodName, "setLed01") == 0) {
+        glob_led01_enabled = state;
         // Bổ sung code điều khiển phần cứng nếu có: digitalWrite(PIN_1, state);
     } 
-    else if (strcmp(methodName, "setHumiLed") == 0) {
-        glob_humi_led_enabled = state;
+    else if (strcmp(methodName, "setLed02") == 0) {
+        glob_led02_enabled = state;
         // Bổ sung code điều khiển phần cứng nếu có: digitalWrite(PIN_2, state);
     }
 
@@ -66,22 +66,22 @@ RPC_Response handleSetLogic(const char* methodName, bool state) {
 RPC_Response handleGetLogic(const char* methodName) {
     bool currentState = false;
     
-    if (strcmp(methodName, "getTempLed") == 0) {
-        currentState = glob_temp_led_enabled;
+    if (strcmp(methodName, "getLed01") == 0) {
+        currentState = glob_led01_enabled;
     } 
-    else if (strcmp(methodName, "getHumiLed") == 0) {
-        currentState = glob_humi_led_enabled;
+    else if (strcmp(methodName, "getLed02") == 0) {
+        currentState = glob_led02_enabled;
     }
     
     return RPC_Response(methodName, currentState);
 }
 
 
-RPC_Response setTempLedSwitch(const RPC_Data &data) { return handleSetLogic("setTempLed", data); }
-RPC_Response setHumiLedSwitch(const RPC_Data &data) { return handleSetLogic("setHumiLed", data); }
+RPC_Response setLed01Switch(const RPC_Data &data) { return handleSetLogic("setLed01", data); }
+RPC_Response setLed02Switch(const RPC_Data &data) { return handleSetLogic("setLed02", data); }
 
-RPC_Response getTempLedStatus(const RPC_Data &data) { return handleGetLogic("getTempLed"); }
-RPC_Response getHumiLedStatus(const RPC_Data &data) { return handleGetLogic("getHumiLed"); }
+RPC_Response getLed01Status(const RPC_Data &data) { return handleGetLogic("getLed01"); }
+RPC_Response getLed02Status(const RPC_Data &data) { return handleGetLogic("getLed02"); }
 
 RPC_Response setLedSwitchValue(const RPC_Data &data)
 {
@@ -93,10 +93,10 @@ RPC_Response setLedSwitchValue(const RPC_Data &data)
 }
 
 const std::array<RPC_Callback, 4U> callbacks = {
-    RPC_Callback{"setTempLed", setTempLedSwitch},
-    RPC_Callback{"setHumiLed", setHumiLedSwitch},
-    RPC_Callback{"getTempLed", getTempLedStatus},
-    RPC_Callback{"getHumiLed", getHumiLedStatus}
+    RPC_Callback{"setLed01", setLed01Switch},
+    RPC_Callback{"setLed02", setLed02Switch},
+    RPC_Callback{"getLed01", getLed01Status},
+    RPC_Callback{"getLed02", getLed02Status}
 };
 
 const Shared_Attribute_Callback attributes_callback(&processSharedAttributes, SHARED_ATTRIBUTES_LIST.cbegin(), SHARED_ATTRIBUTES_LIST.cend());
@@ -158,3 +158,4 @@ void CORE_IOT_reconnect()
         tb.loop();
     }
 }
+

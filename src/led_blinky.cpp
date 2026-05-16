@@ -8,7 +8,7 @@ void led_blinky(void *pvParameters)
   for (;;)
   {
     // Kiểm tra cờ do RPC (ThingsBoard) điều khiển
-    if (!glob_temp_led_enabled)
+    if (!glob_led01_enabled)
     {
       // Nếu tắt: Kéo chân GPIO xuống LOW
       digitalWrite(LED_GPIO, LOW);

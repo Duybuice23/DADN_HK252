@@ -12,7 +12,7 @@ void neo_blinky(void *pvParameters)
   while (1)
   {
     // Kiểm tra cờ do RPC (ThingsBoard) điều khiển
-    if (!glob_humi_led_enabled)
+    if (!glob_led02_enabled)
     {
       // Nếu tắt: Clear toàn bộ dải NeoPixel
       strip.clear();
