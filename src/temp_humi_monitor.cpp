@@ -39,7 +39,7 @@ void temp_humi_monitor(void *pvParameters)
 
     glob_temperature = temperature;
     glob_humidity    = humidity;
-    //glob_gas = gas;
+    glob_gas = gas;
 
     updateLcd(temperature, humidity, gas);
 
@@ -52,7 +52,7 @@ void temp_humi_monitor(void *pvParameters)
     Serial.print(" C ");
     Serial.print("G: ");
     Serial.println(gas);
-    vTaskDelay(pdMS_TO_TICKS(2000));
+    vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
 

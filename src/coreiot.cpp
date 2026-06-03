@@ -69,7 +69,7 @@ void coreiot_publish_led_states()
   StaticJsonDocument<128> doc;
   doc["led01"] = glob_led01_enabled;
   doc["led02"] = glob_led02_enabled;
-
+  doc["buzzer"] = glob_buzzer_enabled;
   String json;
   serializeJson(doc, json);
   client.publish("v1/devices/me/attributes", json.c_str());
@@ -145,6 +145,21 @@ void callback(char* topic, byte* payload, unsigned int length)
     resp["led02"] = glob_led02_enabled;
     sendRpcResponse(requestId, resp);
   }
+  // ----- RPC SET: Buzzer -----
+  else if (strcmp(method, "setBuzzer") == 0)
+  {
+    bool newState = rpcParamToBool(params);
+    glob_buzzer_enabled = newState;
+
+    coreiot_publish_led_states();
+    broadcastDeviceStateToWebUI("Buzzer", glob_buzzer_enabled, BUZZER_PIN);
+
+    StaticJsonDocument<128> resp;
+    resp["method"]  = "setBuzzer";
+    resp["success"] = true;
+    resp["buzzer"] = glob_buzzer_enabled;
+    sendRpcResponse(requestId, resp);
+  }
   // ----- RPC GET -----
   else if (strcmp(method, "getLed01") == 0)
   {
@@ -203,7 +218,7 @@ void coreiot_task(void *pvParameters)
 
   // Biến dùng cho timer không chặn (Non-blocking)
   unsigned long lastTelemetrySend = 0;
-  const unsigned long TELEMETRY_INTERVAL = 5000; // 5 giây gửi 1 lần
+  const unsigned long TELEMETRY_INTERVAL = 3000; // 3 giây gửi 1 lần
 
   for (;;)
   {

@@ -10,6 +10,7 @@
 #define LED_GPIO 48
 #define NEO_PIN 45
 #define LED_COUNT 1 
+#define BUZZER_PIN 2
 extern float glob_temperature;
 extern float glob_humidity;
 extern float glob_gas;
@@ -70,6 +71,8 @@ extern NeoColorConfig neoColorConfig[3];
 // Cho phép bật/tắt LED từ Web UI
 extern volatile bool glob_led01_enabled;
 extern volatile bool glob_led02_enabled;
+// Buzzer enable flag (controlled by RPC)
+extern volatile bool glob_buzzer_enabled;
 
 // ====== TinyML runtime result (cho CoreIoT & WebServer) ======
 extern float tinyml_score;

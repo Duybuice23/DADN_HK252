@@ -3,6 +3,7 @@
 #include "led_blinky.h"
 #include "neo_blinky.h"
 #include "temp_humi_monitor.h"
+#include "buzzer.h"
 // #include "tinyml.h"
 #include "coreiot.h"
 
@@ -33,6 +34,14 @@ void setup()
   xTaskCreate(neo_blinky,
               "Task NEO Blink",
               2048,
+              nullptr,
+              2,
+              nullptr);
+
+  // Task 2.5: Buzzer (on/off via RPC)
+  xTaskCreate(buzzer_blinky,
+              "Task Buzzer",
+              1024,
               nullptr,
               2,
               nullptr);

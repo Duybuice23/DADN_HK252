@@ -116,31 +116,31 @@ void handleWebSocketMessage(String message)
     s["server"] = CORE_IOT_SERVER;
     s["port"] = CORE_IOT_PORT;
 
-   // Vẫn trả cấu hình hiển thị để UI cũ không lỗi parse.
-    JsonObject thr = v.createNestedObject("thresholds");
-    thr["tempCold"] = tempColdThreshold;
-    thr["tempHot"] = tempHotThreshold;
-    thr["humiDry"] = humiDryThreshold;
-    thr["humiHumid"] = humiHumidThreshold;
+  //  // Vẫn trả cấu hình hiển thị để UI cũ không lỗi parse.
+  //   JsonObject thr = v.createNestedObject("thresholds");
+  //   thr["tempCold"] = tempColdThreshold;
+  //   thr["tempHot"] = tempHotThreshold;
+  //   thr["humiDry"] = humiDryThreshold;
+  //   thr["humiHumid"] = humiHumidThreshold;
 
-    JsonObject lp = v.createNestedObject("ledPattern");
-    lp["coldOn"] = led01Config[TEMP_LEVEL_COLD].on_ms;
-    lp["coldOff"] = led01Config[TEMP_LEVEL_COLD].off_ms;
-    lp["normalOn"] = led01Config[TEMP_LEVEL_NORMAL].on_ms;
-    lp["normalOff"] = led0 1Config[TEMP_LEVEL_NORMAL].off_ms;
-    lp["hotOn"] = led01Config[TEMP_LEVEL_HOT].on_ms;
-    lp["hotOff"] = led01Config[TEMP_LEVEL_HOT].off_ms;
+  //   JsonObject lp = v.createNestedObject("ledPattern");
+  //   lp["coldOn"] = led01Config[TEMP_LEVEL_COLD].on_ms;
+  //   lp["coldOff"] = led01Config[TEMP_LEVEL_COLD].off_ms;
+  //   lp["normalOn"] = led01Config[TEMP_LEVEL_NORMAL].on_ms;
+  //   lp["normalOff"] = led0 1Config[TEMP_LEVEL_NORMAL].off_ms;
+  //   lp["hotOn"] = led01Config[TEMP_LEVEL_HOT].on_ms;
+  //   lp["hotOff"] = led01Config[TEMP_LEVEL_HOT].off_ms;
 
-    JsonObject neo = v.createNestedObject("neoColors");
-    neo["dry"] = rgbToHex(neoColorConfig[HUMI_LEVEL_DRY].r,
-                          neoColorConfig[HUMI_LEVEL_DRY].g,
-                          neoColorConfig[HUMI_LEVEL_DRY].b);
-    neo["ok"] = rgbToHex(neoColorConfig[HUMI_LEVEL_OK].r,
-                         neoColorConfig[HUMI_LEVEL_OK].g,
-                         neoColorConfig[HUMI_LEVEL_OK].b);
-    neo["humid"] = rgbToHex(neoColorConfig[HUMI_LEVEL_HUMID].r,
-                            neoColorConfig[HUMI_LEVEL_HUMID].g,
-                            neoColorConfig[HUMI_LEVEL_HUMID].b);
+  //   JsonObject neo = v.createNestedObject("neoColors");
+  //   neo["dry"] = rgbToHex(neoColorConfig[HUMI_LEVEL_DRY].r,
+  //                         neoColorConfig[HUMI_LEVEL_DRY].g,
+  //                         neoColorConfig[HUMI_LEVEL_DRY].b);
+  //   neo["ok"] = rgbToHex(neoColorConfig[HUMI_LEVEL_OK].r,
+  //                        neoColorConfig[HUMI_LEVEL_OK].g,
+  //                        neoColorConfig[HUMI_LEVEL_OK].b);
+  //   neo["humid"] = rgbToHex(neoColorConfig[HUMI_LEVEL_HUMID].r,
+  //                           neoColorConfig[HUMI_LEVEL_HUMID].g,
+  //                           neoColorConfig[HUMI_LEVEL_HUMID].b);
 
     String out;
     serializeJson(resp, out);

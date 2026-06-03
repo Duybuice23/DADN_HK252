@@ -12,8 +12,6 @@ void led_blinky(void *pvParameters)
     {
       // Nếu tắt: Kéo chân GPIO xuống LOW
       digitalWrite(LED_GPIO, LOW);
-      
-      // Nhường CPU 100ms rồi mới quay lại kiểm tra tiếp
       vTaskDelay(pdMS_TO_TICKS(100));
       continue; 
     }

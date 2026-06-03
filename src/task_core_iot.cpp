@@ -1,5 +1,6 @@
 #include "task_core_iot.h"
 #include "global.h"
+#include "buzzer.h"
 constexpr uint32_t MAX_MESSAGE_SIZE = 1024U;
 
 WiFiClient wifiClient;
@@ -56,13 +57,15 @@ RPC_Response handleSetLogic(const char* methodName, bool state) {
         // Bổ sung code điều khiển phần cứng nếu có: digitalWrite(PIN_2, state);
     }
 
+    else if (strcmp(methodName, "setBuzzer") == 0) {
+        glob_buzzer_enabled = state;
+        // digitalWrite(BUZZER_PIN, state ? HIGH : LOW);
+    }
+
     Serial.printf("[%s] State changed to: %s\n", methodName, state ? "ON" : "OFF");
-    
-    // Trả về đúng tên method và trạng thái
     return RPC_Response(methodName, state);
 }
 
-// --- HÀM XỬ LÝ CHUNG CHO LỆNH GET (LẤY TRẠNG THÁI) ---
 RPC_Response handleGetLogic(const char* methodName) {
     bool currentState = false;
     
@@ -72,6 +75,10 @@ RPC_Response handleGetLogic(const char* methodName) {
     else if (strcmp(methodName, "getLed02") == 0) {
         currentState = glob_led02_enabled;
     }
+
+    else if (strcmp(methodName, "getBuzzer") == 0) {
+        currentState = glob_buzzer_enabled;
+    }
     
     return RPC_Response(methodName, currentState);
 }
@@ -79,9 +86,12 @@ RPC_Response handleGetLogic(const char* methodName) {
 
 RPC_Response setLed01Switch(const RPC_Data &data) { return handleSetLogic("setLed01", data); }
 RPC_Response setLed02Switch(const RPC_Data &data) { return handleSetLogic("setLed02", data); }
+RPC_Response setBuzzerSwitch(const RPC_Data &data) { return handleSetLogic("setBuzzer", data); }
 
 RPC_Response getLed01Status(const RPC_Data &data) { return handleGetLogic("getLed01"); }
 RPC_Response getLed02Status(const RPC_Data &data) { return handleGetLogic("getLed02"); }
+RPC_Response getBuzzerStatus(const RPC_Data &data) { return handleGetLogic("getBuzzer"); }
+
 
 RPC_Response setLedSwitchValue(const RPC_Data &data)
 {
@@ -92,11 +102,13 @@ RPC_Response setLedSwitchValue(const RPC_Data &data)
     return RPC_Response("setLedSwitchValue", newState);
 }
 
-const std::array<RPC_Callback, 4U> callbacks = {
+const std::array<RPC_Callback, 6U> callbacks = {
     RPC_Callback{"setLed01", setLed01Switch},
     RPC_Callback{"setLed02", setLed02Switch},
     RPC_Callback{"getLed01", getLed01Status},
-    RPC_Callback{"getLed02", getLed02Status}
+    RPC_Callback{"getLed02", getLed02Status},
+    RPC_Callback{"setBuzzer", setBuzzerSwitch},
+    RPC_Callback{"getBuzzer", getBuzzerStatus}
 };
 
 const Shared_Attribute_Callback attributes_callback(&processSharedAttributes, SHARED_ATTRIBUTES_LIST.cbegin(), SHARED_ATTRIBUTES_LIST.cend());
@@ -129,7 +141,7 @@ void CORE_IOT_reconnect()
             return;
         }
 
-        tb.sendAttributeData("macAddress", WiFi.macAddress().c_str());
+        // Removed sending device metadata attributes to keep only device states
 
         Serial.println("Subscribing for RPC...");
         if (!tb.RPC_Subscribe(callbacks.cbegin(), callbacks.cend()))
@@ -151,7 +163,7 @@ void CORE_IOT_reconnect()
             // Serial.println("Failed to request for shared attributes");
             return;
         }
-        tb.sendAttributeData("localIp", WiFi.localIP().toString().c_str());
+        // localIp attribute omitted; only sending led/buzzer states as attributes
     }
     else if (tb.connected())
     {
